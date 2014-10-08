@@ -17,20 +17,34 @@
 
 void initializeRobot() {
 	if(SensorValue(Touch) == 1) {
-		nMotorEncoder[leftFront] = 0;
-		nMotorEncoder[leftBack] = 0;
-		while(nMotorEncoder[leftFront] < 1380 && nMotorEncoder[leftBack] < 1380) {
-				motor[leftFront] = 85;
-				motor[leftBack] = 85;
-				motor[rightFront] = -85;
-				motor[rightBack] = -85;
-		}
+		turn(90, 90, "left");
 	}
   return;
 }
 
+void turn(int degree, int power, string direction) {
+	nMotorEncoder[leftFront] = 0;
+	nMotorEncoder[leftBack] = 0;
+	int stopTurn = 1380 //encoderTick/degree * degree
+	if(direction == "left") {
+		while(nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn) {
+			motor[leftFront] = power;
+			motor[leftBack] = power;
+			motor[rightFront] = power * -1;
+			motor[rightBack] = power * -1;
+		}
+	} else if (direction == "right") {
+			while(nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn) {
+				motor[leftFront] = power * -1;
+				motor[leftBack] = power * -1;
+				motor[rightFront] = power;
+				motor[rightBack] = power;
+		}
+	}
+}
+
 task main() {
-  initializeRobot();
+	initializeRobot();
   waitForStart();
   while (true) {
 
