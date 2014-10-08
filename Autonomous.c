@@ -15,25 +15,18 @@
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 
-void initializeRobot() {
-	if(SensorValue(Touch) == 1) {
-		turn(90, 90, "left");
-	}
-  return;
-}
-
-void turn(int degree, int power, string direction) {
+void turn(int degree, int power, bool leftDir) {
 	nMotorEncoder[leftFront] = 0;
 	nMotorEncoder[leftBack] = 0;
-	int stopTurn = 1380 //encoderTick/degree * degree
-	if(direction == "left") {
+	int stopTurn = 1380; //encoderTick/degree * degree
+	if(leftDir) {
 		while(nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn) {
 			motor[leftFront] = power;
 			motor[leftBack] = power;
 			motor[rightFront] = power * -1;
 			motor[rightBack] = power * -1;
 		}
-	} else if (direction == "right") {
+	} else {
 			while(nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn) {
 				motor[leftFront] = power * -1;
 				motor[leftBack] = power * -1;
@@ -41,6 +34,13 @@ void turn(int degree, int power, string direction) {
 				motor[rightBack] = power;
 		}
 	}
+}
+
+void initializeRobot() {
+	if(SensorValue(Touch) == 1) {
+		turn(90, 90, true);
+	}
+  return;
 }
 
 task main() {
