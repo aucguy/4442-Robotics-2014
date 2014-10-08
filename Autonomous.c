@@ -46,7 +46,12 @@ void initializeRobot() {
 task main() {
 	initializeRobot();
   waitForStart();
-  while (true) {
+	while(SensorValue[Sonar] >= 10) {
+		motor[leftFront] = 85;
+		motor[leftBack] = 85;
+		motor[rightFront] = 85;
+		motor[rightBack] = 85;
+	}
 
-  }
+	//Code to raise scissor lift and deposit ball in rolling goal
 }
