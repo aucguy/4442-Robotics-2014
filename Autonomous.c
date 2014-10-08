@@ -1,9 +1,9 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
-#pragma config(Sensor, S2,     Touch,          sensorTouch)
-#pragma config(Motor,  motorA,          leftFront,         tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorB,          leftBack,         tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorC,          rightFront,        tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  mtr_S1_C1_1,     rightBack,        tmotorTetrix, openLoop)
+#pragma config(Sensor, S2,     Sonar,          sensorSONAR)
+#pragma config(Motor,  motorA,          leftFront,     tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorB,          leftBack,      tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorC,          rightFront,    tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  mtr_S1_C1_1,     rightBack,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
@@ -37,7 +37,7 @@ void turn(int degree, int power, bool leftDir) {
 }
 
 void initializeRobot() {
-	if(SensorValue(Touch) == 1) {
+	if(SensorValue[Sonar] < 20) {
 		turn(90, 90, true);
 	}
   return;
