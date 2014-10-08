@@ -53,5 +53,8 @@ task main() {
 		motor[rightBack] = 85;
 	}
 
-	//Code to raise scissor lift and deposit ball in rolling goal
+	//TODO: Code to raise scissor lift and deposit ball in 60cm rolling goal
+
+	//TODO: Make robot move 2ft to the left and 2ft forward and deposit other autonomous ball in 30cm rolling goal
+
 }
