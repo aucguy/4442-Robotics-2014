@@ -1,9 +1,9 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
-#pragma config(Sensor, S2,     Touch,          sensorTouch)
-#pragma config(Motor,  motorA,          leftFront,         tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorB,          leftBack,         tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorC,          rightFront,        tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  mtr_S1_C1_1,     rightBack,        tmotorTetrix, openLoop)
+#pragma config(Sensor, S2,     Sonar,          sensorSONAR)
+#pragma config(Motor,  motorA,          leftFront,     tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorB,          leftBack,      tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorC,          rightFront,    tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  mtr_S1_C1_1,     rightBack,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
@@ -30,5 +30,12 @@ task main() {
 	    motor[rightFront] = joystick.joy1_y1;
 	    motor[rightBack] = joystick.joy1_y1;
 		}
-  }
+    getJoystickSettings(joystick);
+    if(joystick.joy1_y1 > 10) {
+    	motor[leftFront] = joystick.joy1_y1;
+    	motor[leftBack] = joystick.joy1_y1;
+    	motor[rightFront] = joystick.joy1_y1;
+    	motor[leftFront] = joystick.joy1_y1;
+  	}
+	}
 }

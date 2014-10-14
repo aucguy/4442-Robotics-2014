@@ -1,9 +1,9 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
-#pragma config(Sensor, S2,     Touch,          sensorTouch)
-#pragma config(Motor,  motorA,          leftFront,         tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorB,          leftBack,         tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorC,          rightFront,        tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  mtr_S1_C1_1,     rightBack,        tmotorTetrix, openLoop)
+#pragma config(Sensor, S2,     Sonar,          sensorSONAR)
+#pragma config(Motor,  motorA,          leftFront,     tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorB,          leftBack,      tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorC,          rightFront,    tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  mtr_S1_C1_1,     rightBack,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    servo1,               tServoNone)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
@@ -15,24 +15,46 @@
 
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 
-void initializeRobot() {
-	if(SensorValue(Touch) == 1) {
-		nMotorEncoder[leftFront] = 0;
-		nMotorEncoder[leftBack] = 0;
-		while(nMotorEncoder[leftFront] < 1380 && nMotorEncoder[leftBack] < 1380) {
-				motor[leftFront] = 85;
-				motor[leftBack] = 85;
-				motor[rightFront] = -85;
-				motor[rightBack] = -85;
+void turn(int degree, int power, bool leftDir) {
+	nMotorEncoder[leftFront] = 0;
+	nMotorEncoder[leftBack] = 0;
+	int stopTurn = 1380; //encoderTick/degree * degree
+	if(leftDir) {
+		while(nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn) {
+			motor[leftFront] = power;
+			motor[leftBack] = power;
+			motor[rightFront] = power * -1;
+			motor[rightBack] = power * -1;
 		}
+	} else {
+			while(nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn) {
+				motor[leftFront] = power * -1;
+				motor[leftBack] = power * -1;
+				motor[rightFront] = power;
+				motor[rightBack] = power;
+		}
+	}
+}
+
+void initializeRobot() {
+	if(SensorValue[Sonar] < 20) {
+		turn(90, 90, true);
 	}
   return;
 }
 
 task main() {
-  initializeRobot();
+	initializeRobot();
   waitForStart();
-  while (true) {
+	while(SensorValue[Sonar] >= 10) {
+		motor[leftFront] = 85;
+		motor[leftBack] = 85;
+		motor[rightFront] = 85;
+		motor[rightBack] = 85;
+	}
 
-  }
+	//TODO: Code to raise scissor lift and deposit ball in 60cm rolling goal
+
+	//TODO: Make robot move 2ft to the left and 2ft forward and deposit other autonomous ball in 30cm rolling goal
+
 }
