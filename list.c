@@ -15,9 +15,9 @@ ListGet(int index) -> T*/
 #define concat(a,b) a ## b
 
 #define ListNew(T) concat(T, ListNew);
-#define ListNew(T) concat(T, ListNew);
-#define ListNew(T) concat(T, ListNew);
-#define ListNew(T) concat(T, ListNew);
+#define ListDelete(T) concat(T, ListDelete);
+#define ListAddLast(T) concat(T, ListAddLast);
+#define ListGet(T) concat(T, ListGet);
 
 #define defListType(T) /
     //T should be a struct /
