@@ -1,0 +1,26 @@
+This is a guide of how to use base.c
+
+--concepts--
+There is something called an Action, which is really a function.
+You can start or stop an action. When an action is running, it gets called each tick.
+
+--using
+First you're going to want to include the header
+	#include "base.h"
+
+Next you'll want to implement the action function
+	bool someAction(int time)
+	{
+		//do stuff
+		return true;
+	}
+This should return whether or not to continue the function and takes the arguement
+of the time the action started
+
+Then you need to add the following line
+	declareAction(someAction) //notice how there is no ';' don't include it!
+
+Then add the following line to updateRobot in base.c
+	updateAction(someAction)
+
+That's all you need to do
