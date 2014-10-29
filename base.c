@@ -9,12 +9,11 @@ TODO add header file*/
 	bool basename(action, Activated);
 
 #define isActionExecuting(action) \
-	/*'returns' whether or the given action is executing*/\
+	/*'returns' whether or the given action is executing*/ \
 	basename(action, Activated);
 
-
 #define updateAction(action) \
-	/*calls the action if it is currently executing. Should be called once per tick*/
+	/*calls the action if it is currently executing. Should be called once per tick*/ \
 	if(isActionExecuting(action)) \
 	{ \
 		if(callAction(action)) \
@@ -23,17 +22,21 @@ TODO add header file*/
 		} \
 	} \
 
-#define callAction(action) \
-	/*internally used function. Calls the action no matter what*/
-	action();
+#define callAction(action, time) \
+	/*internally used function. Calls the action no matter what*/ \
+	action(time, getActionStruct(action));
 
 #define startAction(action) \
-	/*starts executing the function*/
+	/*starts executing the function*/ \
 	isActionExecuting(action) = true;
 
 #define stopAction(action) \
-	/*stops executing the function*/
+	/*stops executing the function*/ \
 	isActionExecuting(action) = false;
+
+#define getActionStruct(action) \
+	/*returns the struct for the given action. This is passed as an arguent to the action function*/ \
+	action ## Struct
 
 void initRobot()
 {
