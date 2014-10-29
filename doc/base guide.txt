@@ -24,3 +24,13 @@ Then add the following line to updateRobot in base.c
 	updateAction(someAction)
 
 That's all you need to do
+
+--example--
+
+bool go(int time)
+{
+	/*moves the robot dist 5 centimeters forward*/
+	motor[MOTOR_LEFT] = speed;
+	motor[MOTER_RIGHT] = speed;
+	return nMoterEncoder[MOTOR_LEFT] < 5 * THINGS_PER_CENTIMETER;
+}
