@@ -9,28 +9,64 @@ First you're going to want to include the header
 	#include "base.h"
 
 Next you'll want to implement the action function
-	bool someAction(int time)
+	bool someAction(int time, someActionStruct data)
 	{
 		//do stuff
 		return true;
 	}
-This should return whether or not to continue the function and takes the arguement
-of the time the action started
+This should return whether or not to continue the function and takes the arguements
+of the time the action started and the custom data defined below.
+
+Also Add
+	struct someActionStruct
+	{
+		/*add attributes here*/
+	}
+
+Then add the following method to start an action
+	void startSomeAction(/*whatever arguements are necessary*/)
+	{
+		//do something to initialize someActionStruct
+		startAction(someAction);
+	}
 
 Then you need to add the following line
-	declareAction(someAction) //notice how there is no ';' don't include it!
+	declareAction(someAction)
 
-Then add the following line to updateRobot in base.c
+Then add the following line to updateRobot() in base.c
 	updateAction(someAction)
+
+To start an action call startSomeAction() with the required arguements.
 
 That's all you need to do
 
 --example--
 
-bool go(int time)
+This moves the robot forward.
+
+struct goStruct
 {
-	/*moves the robot dist 5 centimeters forward*/
-	motor[MOTOR_LEFT] = speed;
-	motor[MOTER_RIGHT] = speed;
-	return nMoterEncoder[MOTOR_LEFT] < 5 * THINGS_PER_CENTIMETER;
+	int dist; //distance robot must go forward in centimeters
+	int speed; //speed the robot will go
+	int orginalDist; //nMoterEncoder value at beggining of the action
+}
+
+bool go(int time, goStruct data)
+{
+	/*moves the robot dist x centimeters forward*/
+	motor[MOTOR_LEFT] = data.speed;
+	motor[MOTER_RIGHT] = data.speed;
+	return nMotorEncoder[MOTOR_LEFT] < data.dist * THINGS_PER_CENTIMETER;
+}
+
+void startGo(int dist, int speed)
+{
+	/*starts to move the robot dist centimeters forward at speed speed*/
+	if(!isActionExecuting(go))
+	{
+		goStruct.dist = dist;
+		goStruct.speed = speed;
+		goStruct.orginalDist = nMotorEncoder[MOTOR_LEFT];
+		startAction(go);
+	}
 }
