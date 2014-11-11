@@ -16,46 +16,12 @@
 #include "robotFunctions.h"
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 
-
 void initializeRobot() {
-  return;
+  servo[grabber] = 127;
 }
 
 task main() {
-	bool movement = true;
-	bool grabberArmBack = true;
-	//Button 1: Switch between movement and scissor lift
 	initializeRobot();
 	waitForStart();
 
-	while (true) {
-			if (joy1Btn(1) == 1) {
-				movement = !movement;
-				wait1Msec(200);
-			}
-
-		if (movement) {
-			leftFrontSpeed = 0;
-			leftBackSpeed = 0;
-			rightFrontSpeed = 0;
-			rightBackSpeed = 0;
-			getJoystickSettings(joystick);
-			if(joystick.joy1_y1 > 10 || joystick.joy1_y1 < -10) {
-				leftFrontSpeed = joystick.joy1_y1;
-				leftBackSpeed = joystick.joy1_y1;
-			}
-			if (joystick.joy1_y2 > 10 || joystick.joy1_y2 < -10) {
-				rightFrontSpeed = joystick.joy1_y2;
-				rightBackSpeed = joystick.joy1_y2;
-			}
-			motor[leftFront] = leftFrontSpeed;
-			motor[leftBack] = leftBackSpeed;
-			motor[rightFront] = rightFrontSpeed;
-			motor[rightBack] = rightBackSpeed;
-		} else { //Movement False - Scissor Lift
-			if(joystick.joy1_y1 > 10 || joystick.joy1_y1 < -10) moveScissorLift(joystick.joy1_y1);
-			else if (joy1Btn(2)) dropBallInGoal();
-		}
-		wait1Msec(50);
-	}
 }
