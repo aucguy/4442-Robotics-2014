@@ -1,12 +1,12 @@
-This is a guide of how to use base.c
+This is a guide of how to use action.c
 
 --concepts--
 There is something called an Action, which is really a function.
 You can start or stop an action. When an action is running, it gets called each tick.
 
 --using
-First you're going to want to include the header
-	#include "base.h"
+First you're going to want to include this file
+	#include "action.c"
 
 Next you'll want to implement the action function
 	bool someAction(int time, SomeActionData data)
@@ -31,7 +31,7 @@ Then add the following method to start an action
 		startAction(someActionData);
 	}
 
-Then add the following line to updateRobot() in base.c
+Then add the following line to updateRobot() in action.c
 	updateAction(someAction)
 
 So it becomes...
@@ -39,6 +39,10 @@ So it becomes...
 	{
 		updateAction(someAction);
 	}
+
+Somewhere in your code after all actions have been defined do the following line:
+
+	finishActionDefs();
 
 To start an action call startSomeAction() with the required arguements.
 
@@ -81,7 +85,9 @@ void startGo(int dist, int speed)
 	}
 }
 
-//in base.c
+finishActionDefs();
+
+//in action.c
 
 void updateRobot()
 {

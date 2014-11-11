@@ -15,6 +15,12 @@
 #define defActionData() typedef struct{bool executing
 #define endActionData(data, type) } type; type data;
 
+#define finishActionDefs() \
+	void updateRobot() \
+	{ \
+		updateAction(testActionUpdate, testActionData); \
+	} \
+
 void updateRobot();
 
 #endif

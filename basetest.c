@@ -24,6 +24,8 @@ void startTestAction(const string m)
 	}
 }
 
+finishActionDefs();
+
 task main()
 {
 	startTestAction("Foo Bar\n");
@@ -32,5 +34,3 @@ task main()
 		updateRobot();
 	}
 }
-
-#include "base.c"
