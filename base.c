@@ -1,56 +1,9 @@
-/*refer to doc/base guide.txt on instructions on how to use this
-TODO add header file*/
-
-#define baseName(action, name) __RoBoT ## concat(action, name)
-	/*internally used function. Concats __RoBot to action to name*/
-
-#define concat(action, name) action ## name
-	/*internally used function. Concats action to name*/
-
-#define declareAction(action) \
-	/*call this function with the arguement of the action function to declare an action*/ \
-	bool basename(action, Activated)
-
-#define isActionExecuting(action) \
-	/*'returns' whether or the given action is executing*/ \
-	basename(action, Activated);
-
-#define updateAction(action) \
-	/*calls the action if it is currently executing. Should be called once per tick*/ \
-	if(isActionExecuting(action)) \
-	{ \
-		if(callAction(action)) \
-		{ \
-			stopAction(action); \
-		} \
-	} \
-
-#define callAction(action, time) \
-	/*internally used function. Calls the action no matter what*/ \
-	action(time, getActionStruct(action))
-
-#define startAction(action) \
-	/*starts executing the function*/ \
-	isActionExecuting(action) = true
-
-#define stopAction(action) \
-	/*stops executing the function*/ \
-	isActionExecuting(action) = false
-
-#define getActionStruct(action) \
-	/*returns the struct for the given action. This is passed as an arguent to the action function*/ \
-	concat(action, Struct)
-
-void initRobot()
-{
-	/*this should be called just in case this is actually neccessary.
-	Obviously this currently does nothing.*/
-}
+#ifndef BASE_INCLUDED
+#define BASE_INCLUDED
 
 void updateRobot()
 {
-	/*call this function each tick, since this updates each action
-	For each action you add, add the following line of code here:
-		updateAction(action)
-	where action is the name of the action function*/
+	updateAction(testActionUpdate, testActionData);
 }
+
+#endif

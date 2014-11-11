@@ -9,7 +9,7 @@ First you're going to want to include the header
 	#include "base.h"
 
 Next you'll want to implement the action function
-	bool someAction(int time, someActionStruct data)
+	bool someAction(int time, SomeActionData data)
 	{
 		//do stuff
 		return true;
@@ -18,23 +18,27 @@ This should return whether or not to continue the function and takes the argueme
 of the time the action started and the custom data defined below.
 
 Also Add
-	struct someActionStruct
-	{
+	defActionData();
 		/*add attributes here*/
-	}
+		int count; //just an example
+	endActionData(someActionData, SomeActionData);
 
 Then add the following method to start an action
-	void startSomeAction(/*whatever arguements are necessary*/)
+	void startSomeAction(/*whatever arguements are necessary*/ int count) //arg is just an example
 	{
 		//do something to initialize someActionStruct
-		startAction(someAction);
+		someActionData.count = count; //so it can be used later
+		startAction(someActionData);
 	}
-
-Then you need to add the following line
-	declareAction(someAction)
 
 Then add the following line to updateRobot() in base.c
 	updateAction(someAction)
+
+So it becomes...
+	void updateRobot()
+	{
+		updateAction(someAction);
+	}
 
 To start an action call startSomeAction() with the required arguements.
 
@@ -44,19 +48,24 @@ That's all you need to do
 
 This moves the robot forward.
 
-struct goStruct
-{
+defActionData();
 	int dist; //distance robot must go forward in centimeters
-	int speed; //speed the robot will go
 	int orginalDist; //nMoterEncoder value at beggining of the action
-}
+endActionData(goData, GoData);
 
-bool go(int time, goStruct data)
+bool goUpdate(int time, goStruct data)
 {
 	/*moves the robot dist x centimeters forward*/
-	motor[MOTOR_LEFT] = data.speed;
-	motor[MOTER_RIGHT] = data.speed;
-	return nMotorEncoder[MOTOR_LEFT] < data.dist * THINGS_PER_CENTIMETER;
+	if(nMotorEncoder[MOTOR_LEFT] > data.dist * THINGS_PER_CENTIMETER + data.orginalDist)
+	{
+		motor[MOTOR_LEFT] = 0;
+		motor[MOTOR_RIGHT] = 0;
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 void startGo(int dist, int speed)
@@ -64,9 +73,17 @@ void startGo(int dist, int speed)
 	/*starts to move the robot dist centimeters forward at speed speed*/
 	if(!isActionExecuting(go))
 	{
+		motor[MOTOR_LEFT] = speed;
+		motor[MOTER_RIGHT] = speed;
 		goStruct.dist = dist;
-		goStruct.speed = speed;
 		goStruct.orginalDist = nMotorEncoder[MOTOR_LEFT];
-		startAction(go);
+		startAction(goUpdate);
 	}
+}
+
+//in base.c
+
+void updateRobot()
+{
+	updateAction(goUpdate, goData);
 }
