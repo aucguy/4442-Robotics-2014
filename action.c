@@ -23,11 +23,10 @@
 	typedef struct \
 	{ \
 		bool executing \
-		/*add your code here*/
+		/*add your attributes here*/
 
 #define endActionData(data, type) \
-	/*ends an action data*/ \
-		/*add your code here*/ \
+	/*ends an action data*/ \\
 	} type; \
 	type data;
 
@@ -35,8 +34,14 @@
 	/*finishs the action definitions*/ \
 	void updateRobot() \
 	{ \
-		updateAction(testActionUpdate, testActionData); \
-		updateAction(secondActionUpdate, secondActionData); \
+		#ifdef test_c \
+			updateAction(testActionUpdate, testActionData); \
+			updateAction(secondActionUpdate, secondActionData); \
+		#endif \
+		#ifdef robotFunctions_c \
+			updateAction(testActionUpdate, testActionData); \
+			updateAction(secondActionUpdate, secondActionData); \
+		#endif \
 	} \
 
 void updateRobot();

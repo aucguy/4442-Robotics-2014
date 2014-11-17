@@ -43,3 +43,5 @@ task main() {
 	move(1 * 12, 90);
 	releaseRollingGoal();
 }
+
+finishActionDefs();

@@ -1,7 +1,16 @@
 #ifndef robotFunctions_h
 #define robotFunctions_h
 
-#include "actions.c"
+#include "action.c"
+
+void resetMoveEncoders()
+{
+	/*sets the drive train motor encoders to zero*/
+	nMotorEncoder[leftFront] = 0;
+	nMotorEncoder[leftBack] = 0;
+	nMotorEncoder[rightFront] = 0;
+	nMotorEncoder[rightBack] = 0;
+}
 
 defActionData();
 	float distance;
@@ -15,38 +24,34 @@ void startMove(float distance, int power)
 	/*distance is in inches*/
 	if(!moveActionExecuting())
 	{
+		resetMoveEncoders();
 		motor[leftFront] = power;
 		motor[leftBack] = power;
 		motor[rightFront] = power;
 		motor[rightBack] = power;
-		nMotorEncoder[leftFront] = 0;
-		nMotorEncoder[leftBack] = 0;
-		nMotorEncoder[rightFront] = 0;
-		nMotorEncoder[rightBack] = 0;
 		moveData.distance = distance / 0.032527;
 		moveData.power = power;
 		startAction(moveData)
 	}
 }
 
-void moveUpdate(int time, MoveData data) {
-	return abs(nMotorEncoder[leftFront]) < data.distance
+bool moveUpdate(int time, MoveData data) {
+	return abs(nMotorEncoder[leftFront]) < data.distance;
 }
 
 defActionData();
 	int degree;
 	int power;
 	bool leftDir;
-endActionDef(turnData, TurnData);
+//endActionDef(turnData, TurnData);
+} TurnData;
+TurnData turnData;
 
 void startTurn(int degree, int power, bool leftDir)
 {
 	if(!moveActionExecuting())
 	{
-		nMotorEncoder[leftFront] = 0;
-		nMotorEncoder[leftBack] = 0;
-		nMotorEncoder[rightFront] = 0;
-		nMotorEncoder[rightBack] = 0;
+		resetMoveEncoders();
 		if(leftDir)
 		{
 			motor[leftFront] = power;
@@ -69,16 +74,13 @@ void startTurn(int degree, int power, bool leftDir)
 
 void turnUpdate() {
 
-	const int stopTurn = 1380; //encoderTick/1 degree * degree var Number will need to be changed
-	if(leftDir) {
-		return nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurns;
-	} else {
+	const int stopTurn = 1380 * turnData.degree; //encoderTick/1 degree * degree var Number will need to be changed
+	if(turnData.leftDir) {
 		return nMotorEncoder[leftFront] < stopTurn && nMotorEncoder[leftBack] < stopTurn;
 	}
 }
 
-
-bool executingMoveAction()
+bool moveActionExecuting()
 {
 	return isActionExecuting(moveData) || isActionExecuting(turnData);
 }
@@ -90,7 +92,7 @@ void grabRollingGoal() {
 	wait1Msec(100); //Number will need to be changed STOP SERVO
 }
 
-void releaseRollingGoal() {
+void releaseRollingGoal() { //not an action since one would expect to grab something before continuing
 	servo[grabber] = 0;
 	wait1Msec(100); //Number will need to be changed
 	servo[grabber] = 127;
